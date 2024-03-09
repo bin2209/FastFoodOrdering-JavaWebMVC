@@ -123,7 +123,47 @@ public class Account extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.setCharacterEncoding("UTF-8");
+        int id = Integer.parseInt(request.getParameter("id"));
+        String pass = request.getParameter("pass");
+        int role = Integer.parseInt(request.getParameter("role"));
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String mail = request.getParameter("mail");
+        String gender = request.getParameter("gender");
+        int district = Integer.parseInt(request.getParameter("district"));
+        String address = request.getParameter("address");
+
+        Database db = new Database();
+        ArrayList<Conscious> con = db.getAllConscious();
+
+//        District dis = db.getDistrictById(district);
+        Staff st = new Staff(id, name, gender, phone, pass,mail , address, role, false, district);
+        String ms = "";
+        if (db.updateStaff(st)) {
+            District dis = db.getDistrictById(st.getDistrictID());
+            Conscious con1 = db.getConsciousByDistrictId(st.getDistrictID());
+            
+            ms = "Update Successful.";
+            request.setAttribute("dis", dis.getDistrictID());
+            request.setAttribute("con1", con1.getConsciousID());
+            request.setAttribute("consciouss", con);
+            request.setAttribute("message", ms);    
+            request.getSession().setAttribute("USER", st);
+            response.sendRedirect("account");
+//            request.getRequestDispatcher("account.jsp").forward(request, response);
+        } else {
+            District dis = db.getDistrictById(st.getDistrictID());
+            Conscious con1 = db.getConsciousByDistrictId(st.getDistrictID());
+            ms = "Update Fail.";
+            request.setAttribute("dis", dis.getDistrictID());
+            request.setAttribute("con1", con1.getConsciousID());
+            request.setAttribute("consciouss", con);
+            request.setAttribute("message", ms);
+            request.getSession().setAttribute("USER", st);
+            response.sendRedirect("account");
+//            request.getRequestDispatcher("account.jsp").forward(request, response);
+        }
     }
 
     /**

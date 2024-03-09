@@ -40,6 +40,14 @@
         <servlet-name>AccountDetail</servlet-name>
         <servlet-class>controller.AccountDetail</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>WorkingPage</servlet-name>
+        <servlet-class>controller.WorkingPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UploadProduct</servlet-name>
+        <servlet-class>controller.UploadProduct</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Menu</servlet-name>
         <url-pattern>/menu</url-pattern>
@@ -79,6 +87,14 @@
     <servlet-mapping>
         <servlet-name>AccountDetail</servlet-name>
         <url-pattern>/accountdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WorkingPage</servlet-name>
+        <url-pattern>/workingpage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadProduct</servlet-name>
+        <url-pattern>/uploadproduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

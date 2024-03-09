@@ -10,17 +10,24 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import model.Conscious;
+import java.util.Collection;
 import model.Database;
-import model.District;
-import model.Staff;
+import model.Product;
+import model.Shop;
 
 /**
  *
  * @author Admin
  */
-public class Update extends HttpServlet {
+public class UploadProduct extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +46,10 @@ public class Update extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Update</title>");
+            out.println("<title>Servlet UploadProduct</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Update at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UploadProduct at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -71,46 +78,12 @@ public class Update extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+   
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        int id = Integer.parseInt(request.getParameter("id"));
-        String pass = request.getParameter("pass");
-        int role = Integer.parseInt(request.getParameter("role"));
-        String name = request.getParameter("name");
-        String phone = request.getParameter("phone");
-        String mail = request.getParameter("mail");
-        String gender = request.getParameter("gender");
-        int district = Integer.parseInt(request.getParameter("district"));
-        String address = request.getParameter("address");
-
-        Database db = new Database();
-        ArrayList<Conscious> con = db.getAllConscious();
-
-//        District dis = db.getDistrictById(district);
-        Staff st = new Staff(id, name, gender, phone, pass, mail, address, role, false, district);
-        String ms = "";
-        if (db.updateStaff(st)) {
-            District dis = db.getDistrictById(st.getDistrictID());
-            Conscious con1 = db.getConsciousByDistrictId(st.getDistrictID());
-            ms = "Update Successful.";
-            request.setAttribute("dis", dis.getDistrictID());
-            request.setAttribute("con1", con1.getConsciousID());
-            request.setAttribute("consciouss", con);
-            request.setAttribute("message", ms);
-            request.getRequestDispatcher("account.jsp").forward(request, response);
-        } else {
-            District dis = db.getDistrictById(st.getDistrictID());
-            Conscious con1 = db.getConsciousByDistrictId(st.getDistrictID());
-            ms = "Update Fail.";
-            request.setAttribute("dis", dis.getDistrictID());
-            request.setAttribute("con1", con1.getConsciousID());
-            request.setAttribute("consciouss", con);
-            request.setAttribute("message", ms);
-            request.getRequestDispatcher("account.jsp").forward(request, response);
-        }
-
+      
     }
 
     /**

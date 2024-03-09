@@ -25,7 +25,7 @@
                     </ul>
                 </div>
             </div>
-            <form action="update" method="post" class="col-md-6 mb-5 mb-md-0">
+            <form action="account" method="post" class="col-md-6 mb-5 mb-md-0">
                 <div class="p-3 p-lg-5 rounded-5 bg-white">
                     <h2 style="text-align: center;">Account Update</h2>
 
@@ -56,7 +56,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Email address</label>
-                        <input type="email" class="form-control" name="mail" value="${USER.email}" disabled>
+                        <input type="email" class="form-control" name="mail" value="${USER.email}" readonly>
                     </div>
 
 
@@ -103,10 +103,10 @@
                     <div class="mb-3">
                         <label class="form-label">Role</label>
                         <c:if test="${USER.role == 1}">
-                            <input type="text" class="form-control" name="role" value="OWNER" disabled>
+                            <input type="text" class="form-control" name="role" value="OWNER" readonly>
                         </c:if>
                         <c:if test="${USER.role == 2}">
-                            <input type="text" class="form-control" name="role" value="SHIPPER" disabled>
+                            <input type="text" class="form-control" name="role" value="SHIPPER" readonly>
                         </c:if>
                         <!-- Thêm các điều kiện khác nếu cần -->
                     </div>

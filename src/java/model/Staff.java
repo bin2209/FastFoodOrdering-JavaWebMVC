@@ -163,10 +163,5 @@ public class Staff {
         return "Staff{" + "staffID=" + staffID + ", name=" + name + ", gender=" + gender + ", phone=" + phone + ", password=" + password + ", email=" + email + ", address=" + address + ", role=" + role + ", status=" + status + ", DistrictID=" + DistrictID + '}';
     }
 
-    public static void main(String[] args) {
 
-        Staff st = new Staff(100, "lep", 'N', "0935413714", "123", "l@gmail.com", "thủy yên", 1, false, 75);
-
-        System.out.println(st);
-    }
 }

@@ -178,4 +178,102 @@ public class Database implements DBInfo {
         return conscious;
     }
 
+    public static Shop getShopByStaffID(int staffID) {
+        Shop shop = null;
+
+        try ( Connection con = DriverManager.getConnection(dbURL, dbUser, dbPass)) {
+            String query = "SELECT Shop_ID, Name_Shop, Phone_Shop, Address_Shop, Shop_Description, MS_Tax, Staff_ID, DistrictID FROM Shop WHERE Staff_ID=?";
+            try ( PreparedStatement pstmt = con.prepareStatement(query)) {
+                pstmt.setInt(1, staffID);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    int shopID = rs.getInt("Shop_ID");
+                    String name = rs.getString("Name_Shop");
+                    String phone = rs.getString("Phone_Shop");
+                    String address = rs.getString("Address_Shop");
+                    String description = rs.getString("Shop_Description");
+                    String tax = rs.getString("MS_Tax");
+                    int districtID = rs.getInt("DistrictID");
+
+                    shop = new Shop(shopID, name, phone, address, description, tax, staffID, districtID);
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return shop;
+    }
+
+    public static boolean addNewShop(Shop newShop) {
+        try ( Connection con = DriverManager.getConnection(dbURL, dbUser, dbPass)) {
+            String query = "INSERT INTO Shop (Name_Shop, Phone_Shop, Address_Shop, Shop_Description, MS_Tax, Staff_ID, DistrictID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            try ( PreparedStatement pstmt = con.prepareStatement(query)) {
+                pstmt.setString(1, newShop.getName());
+                pstmt.setString(2, newShop.getPhone());
+                pstmt.setString(3, newShop.getAddress());
+                pstmt.setString(4, newShop.getDescription());
+                pstmt.setString(5, newShop.getTax());
+                pstmt.setInt(6, newShop.getStaffID());
+                pstmt.setInt(7, newShop.getDistrictID());
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                return rowsAffected > 0;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+
+    public static boolean addNewProduct(Product newProduct) {
+        try ( Connection con = DriverManager.getConnection(dbURL, dbUser, dbPass)) {
+            String query = "INSERT INTO Product (Name, Price, ImagePath, Product_Description, Shop_ID) VALUES (?, ?, ?, ?, ?)";
+
+            try ( PreparedStatement pstmt = con.prepareStatement(query)) {
+                pstmt.setString(1, newProduct.getName());
+                pstmt.setDouble(2, newProduct.getPrice());
+                pstmt.setString(3, newProduct.getImagePath());
+                pstmt.setString(4, newProduct.getProductDescription());
+                pstmt.setInt(5, newProduct.getShopId());
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                return rowsAffected > 0;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+
+    public static ArrayList<Product> getAllProducts() {
+        ArrayList<Product> productList = new ArrayList<>();
+
+        try ( Connection con = DriverManager.getConnection(dbURL, dbUser, dbPass);  Statement stmt = con.createStatement();  ResultSet rs = stmt.executeQuery("SELECT * FROM Product")) {
+
+            while (rs.next()) {
+                int productId = rs.getInt("Product_ID");
+                String name = rs.getString("Name");
+                double price = rs.getDouble("Price");
+                String imagePath = rs.getString("ImagePath");
+                String productDescription = rs.getString("Product_Description");
+                int shopId = rs.getInt("Shop_ID");
+
+                Product product = new Product(productId, name, price, imagePath, productDescription, shopId);
+                productList.add(product);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return productList;
+    }
+
 }
