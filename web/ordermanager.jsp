@@ -8,50 +8,6 @@
 
 <section class="untree_co-section">
     <div class="container">
-        <!-- Topbar -->
-        <nav class="topbar mb-2 shadow">
-            <ul class="navbar-nav ">
-                <li class="nav-item dropdown no-arrow mx-1">
-                    <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-bell fa-fw"></i>
-                        <!-- Counter - Messages -->
-                        <span class=" badge-danger badge-counter">7</span>
-                    </a>
-
-
-                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                         aria-labelledby="messagesDropdown">
-                        <h6 class="dropdown-header">
-                            Message Center
-                        </h6>
-
-                        <!--for each don hang-->
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="dropdown-list-image mr-3">
-                                <div class="status-indicator"></div>
-                            </div>
-                            <div>
-                                <div class="text-truncate">don hang moi</div>
-                                <div class="small text-gray-500">Truong Nguyen · 1h</div>
-                            </div>
-                        </a>
-
-                        <!--for each don hang-->
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="dropdown-list-image mr-3">
-                                <div class="status-indicator"></div>
-                            </div>
-                            <div>
-                                <div class="text-truncate">don hang moi</div>
-                                <div class="small text-gray-500">Truong Nguyen · 1h</div>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-
         <!-- Begin Page Content -->
         <div class="container-fluid">
             <div class="row">

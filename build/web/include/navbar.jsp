@@ -37,7 +37,7 @@
                 <% }%>
                 
                
-                <li><a class="nav-link" href="${pageContext.request.contextPath}/ordermanager"><img src="${pageContext.request.contextPath}/static/images/cart.svg"></a></li>
+                <li><a class="nav-link" href="${pageContext.request.contextPath}/cart"><img src="${pageContext.request.contextPath}/static/images/cart.svg"></a></li>
             </ul>
             
             

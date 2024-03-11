@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/BAI_TAP_JAVA/AssignmentFastFood/src/java/controller/UploadProduct.java</file>
-            <file>file:/D:/BAI_TAP_JAVA/AssignmentFastFood/web/owner.jsp</file>
-            <file>file:/D:/BAI_TAP_JAVA/AssignmentFastFood/src/java/controller/WorkingPage.java</file>
-            <file>file:/D:/BAI_TAP_JAVA/AssignmentFastFood/src/java/model/Product.java</file>
+            <file>file:/D:/BAI_TAP_JAVA/AssignmentFastFood/src/java/controller/Menu.java</file>
+            <file>file:/D:/BAI_TAP_JAVA/AssignmentFastFood/src/java/controller/Detail.java</file>
+            <file>file:/D:/BAI_TAP_JAVA/AssignmentFastFood/web/detail.jsp</file>
+            <file>file:/D:/BAI_TAP_JAVA/AssignmentFastFood/web/ordermanager.jsp</file>
+            <file>file:/D:/BAI_TAP_JAVA/AssignmentFastFood/web/include/navbar.jsp</file>
+            <file>file:/D:/BAI_TAP_JAVA/AssignmentFastFood/web/menu.jsp</file>
         </group>
     </open-files>
 </project-private>

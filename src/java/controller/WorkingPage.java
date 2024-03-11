@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import model.Conscious;
 import model.Database;
 import model.District;
+import model.Product;
 import model.Shop;
 import model.Staff;
 
@@ -65,17 +66,41 @@ public class WorkingPage extends HttpServlet {
         Database db = new Database();
         Shop shop = db.getShopByStaffID(s.getStaffID());
         ArrayList<Conscious> con = db.getAllConscious();
+
         switch (s.getRole()) {
             case 1:
                 if (shop != null) {
                     request.getSession().setAttribute("SHOP", shop);
                     Conscious conShop = db.getConsciousByDistrictId(shop.getDistrictID());
                     District disShop = db.getDistrictById(shop.getDistrictID());
+                    ArrayList<Product> product1 = db.getAllProducts();
+                    ArrayList<Product> products = new ArrayList<>();
+                    ArrayList<Product> productss = new ArrayList<>();
+                    for (Product pro : product1) {
+                        if (pro.getShopId() == shop.getShopID()) {
+                            productss.add(pro);
+                        }
+                    }
+                    if (!productss.isEmpty()) {
+                        products.add(productss.get(0));
+                    }
 
+                    for (int i = 1; i < productss.size(); i++) {
+                        // Lấy sản phẩm hiện tại và sản phẩm trước đó
+                        Product currentProduct = productss.get(i);
+                        Product previousProduct = productss.get(i - 1);
+
+                        // So sánh tên của sản phẩm hiện tại và sản phẩm trước đó
+                        if (!currentProduct.getName().equals(previousProduct.getName())) {
+                            // Nếu tên khác nhau, thêm sản phẩm hiện tại vào danh sách products
+                            products.add(currentProduct);
+                        }
+                    }
                     Conscious conUser = db.getConsciousByDistrictId(s.getDistrictID());
                     District disUser = db.getDistrictById(s.getDistrictID());
-                    request.setAttribute("SHOPaddress", shop.getAddress() + "," + disShop.getName() + "," + conShop.getName());
-                    request.setAttribute("USERaddress", s.getAddress() + "," + disUser.getName() + "," + conUser.getName());
+                    request.setAttribute("products", products);
+                    request.setAttribute("SHOPaddress", shop.getAddress() + ", " + disShop.getName() + ", " + conShop.getName());
+                    request.setAttribute("USERaddress", s.getAddress() + ", " + disUser.getName() + ", " + conUser.getName());
                     request.getRequestDispatcher("owner.jsp").forward(request, response);
                 } else {
                     request.setAttribute("consciouss", con);
@@ -102,22 +127,57 @@ public class WorkingPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        String action = request.getParameter("action");
         Staff s = (Staff) request.getSession().getAttribute("USER");
-        String name = request.getParameter("shopname");
-        String address = request.getParameter("shopaddress");
-        String phone = request.getParameter("shopphone");
-        String tax = request.getParameter("shoptaxcode");
-        String decription = request.getParameter("shopdecription");
-        int district = Integer.parseInt(request.getParameter("district"));
+
         Database db = new Database();
-        Shop sh = new Shop(1, name, phone, address, decription, tax, s.getStaffID(), district);
-        if (db.addNewShop(sh)) {
-            request.setAttribute("message", "Create Shop Susscessful.");
-            request.getRequestDispatcher("owner.jsp").forward(request, response);
-        } else {
-            request.setAttribute("message", "Create Shop Fail.");
-            request.getRequestDispatcher("shop.jsp").forward(request, response);
+        switch (action) {
+            case "createshop":
+                String name = request.getParameter("shopname");
+                String address = request.getParameter("shopaddress");
+                String phone = request.getParameter("shopphone");
+                String tax = request.getParameter("shoptaxcode");
+                String decription = request.getParameter("shopdecription");
+                int district = Integer.parseInt(request.getParameter("district"));
+                Shop sh = new Shop(1, name, phone, address, decription, tax, s.getStaffID(), district);
+                if (db.addNewShop(sh)) {
+                    request.setAttribute("message", "Create Shop Susscessful.");
+
+                    request.getSession().setAttribute("SHOP", sh);
+                    Shop shop = db.getShopByStaffID(s.getStaffID());
+
+                    Conscious conShop = db.getConsciousByDistrictId(shop.getDistrictID());
+                    District disShop = db.getDistrictById(shop.getDistrictID());
+
+                    Conscious conUser = db.getConsciousByDistrictId(s.getDistrictID());
+                    District disUser = db.getDistrictById(s.getDistrictID());
+                    request.setAttribute("SHOPaddress", shop.getAddress() + ", " + disShop.getName() + ", " + conShop.getName());
+                    request.setAttribute("USERaddress", s.getAddress() + ", " + disUser.getName() + ", " + conUser.getName());
+                    request.getRequestDispatcher("owner.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("message", "Create Shop Fail.");
+                    request.getRequestDispatcher("shop.jsp").forward(request, response);
+                }
+
+                break;
+
+            case "deleteshop":
+                int shopID = Integer.parseInt(request.getParameter("shopID"));
+//                if (db.deleteShopByID(shopID)) {
+//                    request.setAttribute("message", "Delete Shop Susscessful.");
+//                    request.getRequestDispatcher("registershop.jsp").forward(request, response);
+//                } else {
+//                    request.setAttribute("message", "Delete Shop Fail.");
+//                    request.getRequestDispatcher("owner.jsp").forward(request, response);
+//                }
+                db.deleteShopByID(shopID);
+
+                break;
+            default:
+                throw new AssertionError();
         }
+
     }
 
     /**

@@ -27,10 +27,18 @@
                                 <i class="fas fa-globe fa-lg text-warning"></i>
                                 <a class="mb-0" href="">Edit brand information</a>
                             </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <i class="fas fa-globe fa-lg text-warning"></i>
+                                <a class="mb-0" href="">View History</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <i class="fas fa-globe fa-lg text-warning"></i>
+                                <a class="mb-0" href="">Create Discount</a>
+                            </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                 <i class="fas fa-globe fa-lg text-warning"></i>
-                                <a class="mb-0" href="">Remove shop</a>
+                                <a class="mb-0"  data-toggle="modal" data-target="#deleteShop">Delete shop</a>
                             </li>
                         </ul>
                     </div>
@@ -82,46 +90,179 @@
                         <div class="card mb-4 mb-md-0">
                             <div class="card-body">
                                 <p class="mb-4"><span class="text-primary font-italic me-1">All Product</span></p>
-                                <ul class="list-group list-group-flush rounded-3">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <p class="mb-0">#001</p>
-                                        <p class="mb-0">Name product</p>
-                                        <p class="mb-0">Price</p>
-                                        <p class="mb-0"><a href="">Show</a> | <a href="">Edit</a> | <a href="">Remove</a></p>
 
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <p class="mb-0">#002</p>
-                                        <p class="mb-0">Name product</p>
-                                        <p class="mb-0">Price</p>
-                                        <p class="mb-0"><a href="">Show</a> | <a href="">Edit</a> | <a href="">Remove</a></p>
+                                <c:if test="${not empty products}">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <!--<th>ID</th>-->
+                                                <th>Name Product</th>
+                                                <th>Price</th>
+                                                <th>Show</th>
+                                                <th>Edit</th>
+                                                <th>Remove</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="product" items="${products}">
+                                                <tr>
+                                                    <!--<td>${product.productId}</td>-->
+                                                    <td>${product.name}</td>
+                                                    <td>${product.price}</td>
+                                                    <td>
+                                                        <input type="hidden" name="name" value="${product.name}">
+                                                        <a class="btn btn-primary" data-toggle="modal" data-target="#show${product.productId}">Show</a>
 
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <p class="mb-0">#003</p>
-                                        <p class="mb-0">Name product</p>
-                                        <p class="mb-0">Price</p>
-                                        <p class="mb-0"><a href="">Show</a> | <a href="">Edit</a> | <a href="">Remove</a></p>
-                                    </li>
-                                </ul>
-                                <div class="d-flex mb-2" style="justify-content: right">
+                                                    </td>
+                                                    <td>
+                                                        <input type="hidden" name="name" value="${product.name}">
+                                                        <a class="btn btn-primary" data-toggle="modal" data-target="#editProduct${product.productId}">Edit</a>
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="hidden" name="name" value="${product.name}">
+                                                        <a class="btn btn-primary" data-toggle="modal" data-target="#deleteProduct${product.productId}">Delete</a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </c:if>
+
+                                <div class="d-flex justify-content-end mb-2">
                                     <a class="btn btn-primary" data-toggle="modal" data-target="#addProduct">Add new product</a>
                                 </div>
-
-
-
-
-
-                                    
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
-        <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+        <!--loop modal to show-->
+        <c:forEach var="product" items="${products}">
+            <div class="modal fade" id="show${product.productId}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Show Product</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <img style="width:100%; max-height: 250px" scr="${pageContext.request.contextPath}/upload/${product.imagePath}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="productNameInput">Product Name:</label>
+                                <input type="text" class="form-control" id="productNameInput" value="${product.name}" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="productPriceInput">Product Price:</label>
+                                <input type="text"  class="form-control" value="${product.price} VND" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="productDescriptionInput">Product Description:</label>
+                                <textarea class="form-control" id="productDescriptionInput" value="${product.productDescription}" disabled></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+
+
+
+
+
+        <!--loop modal to edit-->
+        <c:forEach var="product" items="${products}">
+            <div class="modal fade" id="editProduct${product.productId}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Product #${product.productId}</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <form action="addnewproduct" method="post" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="productNameInput">Product Name:</label>
+                                    <input type="text" class="form-control" id="productNameInput" name="productName" value="${product.name}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="productPriceInput">Product Price:</label>
+                                    <input type="number"  class="form-control" id="productPriceInput" name="productPrice" value="${product.price}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="productDescriptionInput">Product Description:</label>
+                                    <textarea class="form-control" id="productDescriptionInput" name="productDescription" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fileInput">Choose Image File:</label>
+                                    <input multiple type="file" class="form-control-file" id="fileInput" name="file" accept="image/*" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+
+
+        <!--loop modal to DELETE-->
+        <c:forEach var="product" items="${products}">
+            <div class="modal fade" id="deleteProduct${product.productId}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form action="workingpage"  method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Delete Product #${product.productId}</h5>
+                                <button class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">                   
+                                <input type="text" name="action" value="deleteProduct" hiden style="display: none">
+                                <input type="text" name="productID" value="${product.productId}" hiden style="display: none">
+
+                                <div class="form-row">
+                                    <p>Do you want to Delete product #${product.productId}?</p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="submit">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+
+
+
+
+
+
+
+        <!--UPLOAD PRODUCT-->
+        <div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -130,38 +271,63 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-
-                    <form action="uploadproduct"  method="post" enctype="multipart/form-data">
+                    <form action="addnewproduct" method="post" enctype="multipart/form-data">
                         <div class="modal-body">
-
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label for="inputEmail4">Product Name</label>
-                                    <input type="text" name="productname" class="form-control" id="inputEmail4" placeholder="Product Name">
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <label for="inputEmail4">Price</label>
-                                    <input type="text" name="productprice" class="form-control" id="inputPassword4" placeholder="Price">
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <label for="inputPassword4">Description</label>
-                                    <input type="text" name="productdescription" class="form-control" id="inputPassword4" placeholder="Description">
-                                </div>
-
-                                <hr>
-                                <div class="form-group col-md-12">
-                                    <label for="fileInput">Product image</label>
-                                    <input multiple type="file"  id="fileInput" name="file" accept="image/*" required>
-                                </div>
+                            <div class="form-group">
+                                <label for="productNameInput">Product Name:</label>
+                                <input type="text" class="form-control" id="productNameInput" name="productName" required>
                             </div>
-
+                            <div class="form-group">
+                                <label for="productPriceInput">Product Price:</label>
+                                <input type="number"  class="form-control" id="productPriceInput" name="productPrice" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productDescriptionInput">Product Description:</label>
+                                <textarea class="form-control" id="productDescriptionInput" name="productDescription" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="fileInput">Choose Image File:</label>
+                                <input multiple type="file" class="form-control-file" id="fileInput" name="file" accept="image/*" required>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="submit" data-dismiss="modal">Add New</button>
+                            <button type="submit" class="btn btn-primary">Add New</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
+
+        <!--SHOP IS SINGLE--> 
+        <!--DELETE SHOP-->
+        <div class="modal fade" id="deleteShop" tabindex="-1" role="dialog"     aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="workingpage"  method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete Shop</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">                   
+                            <input type="text" name="action" value="deleteshop" hiden style="display: none">
+                            <input type="text" name="shopID" value="${SHOP.shopID}" hiden style="display: none">
+
+                            <div class="form-row">
+                                <p>Do you want to Delete shop?</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="submit">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
 </section>
 <%@ include file="include/footer.jsp" %>

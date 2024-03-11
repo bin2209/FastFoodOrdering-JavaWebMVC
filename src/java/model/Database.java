@@ -230,7 +230,22 @@ public class Database implements DBInfo {
         return false;
     }
 
-    public static boolean addNewProduct(Product newProduct) {
+    public static boolean deleteShopByID(int id) {
+        try ( Connection con = DriverManager.getConnection(dbURL, dbUser, dbPass)) {
+            String query = "DELETE FROM Shop WHERE SHOP_ID = ?";
+
+            try ( PreparedStatement pstmt = con.prepareStatement(query)) {
+
+                pstmt.executeUpdate();
+                return true;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static void addNewProduct(Product newProduct) {
         try ( Connection con = DriverManager.getConnection(dbURL, dbUser, dbPass)) {
             String query = "INSERT INTO Product (Name, Price, ImagePath, Product_Description, Shop_ID) VALUES (?, ?, ?, ?, ?)";
 
@@ -241,15 +256,11 @@ public class Database implements DBInfo {
                 pstmt.setString(4, newProduct.getProductDescription());
                 pstmt.setInt(5, newProduct.getShopId());
 
-                int rowsAffected = pstmt.executeUpdate();
-
-                return rowsAffected > 0;
+                pstmt.executeUpdate();
             }
         } catch (Exception ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        return false;
     }
 
     public static ArrayList<Product> getAllProducts() {
@@ -274,6 +285,96 @@ public class Database implements DBInfo {
         }
 
         return productList;
+    }
+
+    public static ArrayList<Product> getProductsByDistrictID(int districtID) {
+        ArrayList<Product> productList = new ArrayList<>();
+
+        try ( Connection con = DriverManager.getConnection(dbURL, dbUser, dbPass)) {
+            String query = "SELECT p.Product_ID, p.Name, p.Price, p.ImagePath, p.Product_Description, p.Shop_ID "
+                    + "FROM Product p "
+                    + "INNER JOIN Shop s ON p.Shop_ID = s.Shop_ID "
+                    + "WHERE s.DistrictID = ?";
+
+            try ( PreparedStatement pstmt = con.prepareStatement(query)) {
+                pstmt.setInt(1, districtID);
+                ResultSet rs = pstmt.executeQuery();
+
+                while (rs.next()) {
+                    int productId = rs.getInt("Product_ID");
+                    String name = rs.getString("Name");
+                    double price = rs.getDouble("Price");
+                    String imagePath = rs.getString("ImagePath");
+                    String productDescription = rs.getString("Product_Description");
+                    int shopId = rs.getInt("Shop_ID");
+
+                    Product product = new Product(productId, name, price, imagePath, productDescription, shopId);
+                    productList.add(product);
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return productList;
+    }
+
+    public static Product getProductById(int productId) {
+        Product product = null;
+
+        try ( Connection con = DriverManager.getConnection(dbURL, dbUser, dbPass)) {
+            String query = "SELECT Name, Price, ImagePath, Product_Description, Shop_ID FROM Product WHERE Product_ID=?";
+            try ( PreparedStatement pstmt = con.prepareStatement(query)) {
+                pstmt.setInt(1, productId);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    String name = rs.getString("Name");
+                    double price = rs.getDouble("Price");
+                    String imagePath = rs.getString("ImagePath");
+                    String productDescription = rs.getString("Product_Description");
+                    int shopId = rs.getInt("Shop_ID");
+
+                    product = new Product(productId, name, price, imagePath, productDescription, shopId);
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return product;
+    }
+
+    public static Shop getShopByProductID(int productID) {
+        Shop shop = null;
+
+        try ( Connection con = DriverManager.getConnection(dbURL, dbUser, dbPass)) {
+            String query = "SELECT s.Shop_ID, s.Name_Shop, s.Phone_Shop, s.Address_Shop, s.Shop_Description, s.MS_Tax, s.Staff_ID, s.DistrictID "
+                    + "FROM Shop s "
+                    + "INNER JOIN Product p ON s.Shop_ID = p.Shop_ID "
+                    + "WHERE p.Product_ID=?";
+            try ( PreparedStatement pstmt = con.prepareStatement(query)) {
+                pstmt.setInt(1, productID);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    int shopID = rs.getInt("Shop_ID");
+                    String name = rs.getString("Name_Shop");
+                    String phone = rs.getString("Phone_Shop");
+                    String address = rs.getString("Address_Shop");
+                    String description = rs.getString("Shop_Description");
+                    String tax = rs.getString("MS_Tax");
+                    int staffID = rs.getInt("Staff_ID");
+                    int districtID = rs.getInt("DistrictID");
+
+                    shop = new Shop(shopID, name, phone, address, description, tax, staffID, districtID);
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return shop;
     }
 
 }

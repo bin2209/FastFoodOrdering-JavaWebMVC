@@ -45,8 +45,16 @@
         <servlet-class>controller.WorkingPage</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UploadProduct</servlet-name>
-        <servlet-class>controller.UploadProduct</servlet-class>
+        <servlet-name>AddNewProduct</servlet-name>
+        <servlet-class>controller.AddNewProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Detail</servlet-name>
+        <servlet-class>controller.Detail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Cart</servlet-name>
+        <servlet-class>controller.Cart</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Menu</servlet-name>
@@ -93,8 +101,16 @@
         <url-pattern>/workingpage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>UploadProduct</servlet-name>
-        <url-pattern>/uploadproduct</url-pattern>
+        <servlet-name>AddNewProduct</servlet-name>
+        <url-pattern>/addnewproduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Detail</servlet-name>
+        <url-pattern>/detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Cart</servlet-name>
+        <url-pattern>/cart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

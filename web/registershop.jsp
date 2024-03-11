@@ -13,13 +13,14 @@
             </div>
             <div class="col-lg-5 container">
                 <h2 class="section-title">Create Online Shop</h2>
+                
+                
                 <form action="workingpage" method="post" oninput="repass.setCustomValidity(repass.value != userPass.value ? 'Passwords do not match.' : '')">
+                    <input type="text" name="action" value="createshop" hiden style="display: none">
                     <div class="mb-3">
                         <label class="form-label">Shop Name</label>
                         <input type="text" name="shopname" class="form-control" aria-describedby="emailHelp" required>
                     </div>
-
-
 
                     <div class="mb-3">
                         <label class="form-label">Phone Number</label>

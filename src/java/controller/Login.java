@@ -120,6 +120,7 @@ public class Login extends HttpServlet {
 
                 request.setAttribute("message", msg);
                 request.getSession().setAttribute("USER", user);
+                request.getSession().setAttribute("ROLE", user);
                 response.sendRedirect("account");
             } else {
                 String msg = "Đăng nhập thất bại.";
